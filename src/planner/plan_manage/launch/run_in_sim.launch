@@ -1,18 +1,18 @@
 <launch>
   <!-- size of map, change the size inflate x, y, z according to your application -->
-  <arg name="map_size_x" default="20" />
-  <arg name="map_size_y" default="20" />
-  <arg name="map_size_z" default="2" />
+  <arg name="map_size_x" default="40" />
+  <arg name="map_size_y" default="40" />
+  <arg name="map_size_z" default="2.5" />
 
   <arg name="drone_id" default="0" />
 
   <!-- topic of your odometry such as VIO or LIO -->
-  <arg name="odom_topic" />
-  <arg name="camera_pose_topic" default="pcl_render_node/camera_pose"/>
-  <arg name="depth_topic" default="pcl_render_node/depth"/>
+  <arg name="odom_topic" default="/mavros/local_position/odom" />
+  <arg name="camera_pose_topic" default="/camera/pose" />
+  <arg name="depth_topic" default="/camera/depth/image_16" />
 
   <!-- number of moving objects -->
-  <arg name="obj_num" value="10" />
+  <arg name="obj_num" value="1" />
 
   <!-- main algorithm params -->
   <include file="$(find ego_planner)/launch/advanced_param.xml">
@@ -59,16 +59,16 @@
     <!-- It generates a piecewise min-snap traj passing all waypoints -->
     <arg name="point_num" value="1" />
 
-    <arg name="point0_x" value="" />
-    <arg name="point0_y" value="" />
-    <arg name="point0_z" value="" />
+    <arg name="point0_x" value="0" />
+    <arg name="point0_y" value="0" />
+    <arg name="point0_z" value="0" />
 
 
   </include>
 
   <!-- trajectory server -->
   <node pkg="ego_planner" name="drone_$(arg drone_id)_traj_server" type="traj_server" output="screen">
-    <remap from="position_cmd" to="drone_$(arg drone_id)_planning/pos_cmd" />
+    <remap from="/position_cmd" to="drone_$(arg drone_id)_planning/pos_cmd" />
     <remap from="~planning/bspline" to="drone_$(arg drone_id)_planning/bspline" />
 
     <param name="traj_server/time_forward" value="1.0" type="double" />

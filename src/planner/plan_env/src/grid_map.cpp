@@ -707,6 +707,7 @@ void GridMap::updateOccupancyCallback(const ros::TimerEvent & /*event*/)
 void GridMap::depthPoseCallback(const sensor_msgs::ImageConstPtr &img,
                                 const geometry_msgs::PoseStampedConstPtr &pose)
 {
+  // ROS_WARN("depthPoseCallback");
   /* get depth image */
   cv_bridge::CvImagePtr cv_ptr;
   cv_ptr = cv_bridge::toCvCopy(img, img->encoding);
@@ -734,6 +735,7 @@ void GridMap::depthPoseCallback(const sensor_msgs::ImageConstPtr &img,
   }
   else
   {
+    ROS_WARN("pose outside map");
     md_.occ_need_update_ = false;
   }
 
@@ -991,6 +993,7 @@ void GridMap::extrinsicCallback(const nav_msgs::OdometryConstPtr &odom)
 void GridMap::depthOdomCallback(const sensor_msgs::ImageConstPtr &img,
                                 const nav_msgs::OdometryConstPtr &odom)
 {
+  //ROS_WARN("depthOdomCallback");
   /* get pose */
   Eigen::Quaterniond body_q = Eigen::Quaterniond(odom->pose.pose.orientation.w,
                                                  odom->pose.pose.orientation.x,
